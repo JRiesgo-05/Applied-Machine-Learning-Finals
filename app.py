@@ -1,13 +1,12 @@
-    
-#app.py
 from flask import Flask, flash, request, redirect, url_for, render_template
 import urllib.request
 import os
 from werkzeug.utils import secure_filename
- 
+from flask_ngrok import run_with_ngrok
+
 app = Flask(__name__)
  
-UPLOAD_FOLDER = 'content/uploads/'
+UPLOAD_FOLDER = '/content/Applied-Machine-Learning-Finals/static/uploads'
  
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -36,7 +35,8 @@ def upload_image():
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         #print('upload_image filename: ' + filename)
-        flash('Image successfully uploaded and displayed below')
+        print(os.path.join(app.config['UPLOAD_FOLDER'] + filename))
+        #os.system("./content/darknet/darknet detect cfg/custom-yolov4-detector.cfg '/content/drive/MyDrive/Copy of custom-yolov4-detector_12000.weights' {img_path} -dont-show")
         return render_template('index.html', filename=filename)
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
